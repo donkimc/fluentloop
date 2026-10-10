@@ -4,7 +4,7 @@
 
 ## About
 
-FluentLoop builds a personalized, AI-generated English curriculum that adapts to each learner's level, starting with Korean hagwons.
+FluentLoop builds a personalized, AI-generated English curriculum that adapts to each learner's level, starting with an adult Karrot meetup group.
 
 See [docs/PLAN.md](docs/PLAN.md) for the MVP and expansion plan.
 

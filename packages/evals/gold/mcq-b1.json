@@ -1,0 +1,41 @@
+[
+  {
+    "type": "mcq",
+    "level": "B1",
+    "skill": "grammar",
+    "tags": ["present-perfect"],
+    "question": "I ___ in this neighborhood since 2020.",
+    "options": ["live", "have lived", "am living", "was living"],
+    "answerIndex": 1,
+    "explanation": {
+      "en": "Use the present perfect with 'since' for something that started in the past and is still true.",
+      "ko": "과거에 시작해서 지금도 계속되는 일에는 'since'와 함께 현재완료(have + p.p.)를 씁니다."
+    }
+  },
+  {
+    "type": "mcq",
+    "level": "B1",
+    "skill": "grammar",
+    "tags": ["second-conditional"],
+    "question": "If I ___ more free time, I would join a running club.",
+    "options": ["have", "had", "will have", "would have"],
+    "answerIndex": 1,
+    "explanation": {
+      "en": "In the second conditional, the if-clause uses the past simple for an imaginary present situation.",
+      "ko": "가정법 과거에서는 현재 사실과 반대되는 상황을 말할 때 if절에 과거형을 씁니다."
+    }
+  },
+  {
+    "type": "mcq",
+    "level": "B1+",
+    "skill": "vocabulary",
+    "tags": ["phrasal-verbs", "meetups"],
+    "question": "We should ___ again next week. I really enjoyed talking with you.",
+    "options": ["catch up", "give up", "look up", "set off"],
+    "answerIndex": 0,
+    "explanation": {
+      "en": "'Catch up' means to meet and talk with someone, especially after some time apart.",
+      "ko": "'catch up'은 한동안 못 본 사람과 만나서 근황을 나누는 것을 뜻합니다."
+    }
+  }
+]

@@ -1,0 +1,19 @@
+import { expect, test } from "@playwright/test";
+
+test("home page renders with Korean helper text", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Your daily English");
+  await expect(page.locator('[lang="ko"]')).toBeVisible();
+});
+
+test("health endpoint responds", async ({ request }) => {
+  const response = await request.get("/api/health");
+  expect(response.ok()).toBe(true);
+  expect(await response.json()).toEqual({ status: "ok" });
+});
+
+test("security headers are set", async ({ request }) => {
+  const response = await request.get("/");
+  expect(response.headers()["content-security-policy"]).toContain("frame-ancestors 'none'");
+  expect(response.headers()["x-content-type-options"]).toBe("nosniff");
+});

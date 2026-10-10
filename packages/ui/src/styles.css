@@ -1,0 +1,93 @@
+/*
+ * FluentLoop design tokens (docs/PLAN.md §6.3).
+ *
+ * All colors, radii and fonts are defined once here as CSS variables and
+ * exposed to Tailwind through @theme. Components use the semantic names
+ * (bg-primary, text-muted-foreground, …), never raw colors.
+ *
+ * The app imports Tailwind itself, then this file:
+ *   @import "tailwindcss";
+ *   @import "@fluentloop/ui/styles.css";
+ */
+
+@source "../../../apps/web/src";
+@source "./";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  --radius: 0.75rem;
+
+  --background: oklch(0.99 0.004 160);
+  --foreground: oklch(0.22 0.02 250);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--foreground);
+  --muted: oklch(0.96 0.006 250);
+  --muted-foreground: oklch(0.48 0.02 250);
+  --border: oklch(0.91 0.008 250);
+  --ring: oklch(0.62 0.13 170);
+
+  /* Brand: calm teal. */
+  --primary: oklch(0.55 0.12 170);
+  --primary-foreground: oklch(0.99 0 0);
+  --accent: oklch(0.95 0.04 170);
+  --accent-foreground: oklch(0.32 0.08 170);
+
+  --success: oklch(0.6 0.15 150);
+  --danger: oklch(0.58 0.2 25);
+
+  /* Korean helper text: visually secondary to the English it explains. */
+  --korean-foreground: oklch(0.5 0.03 250);
+}
+
+/* Dark tokens are defined from day one so dark mode is cheap to ship later. */
+[data-theme="dark"] {
+  --background: oklch(0.17 0.015 250);
+  --foreground: oklch(0.95 0.005 250);
+  --card: oklch(0.21 0.015 250);
+  --muted: oklch(0.26 0.015 250);
+  --muted-foreground: oklch(0.72 0.02 250);
+  --border: oklch(0.3 0.015 250);
+  --primary: oklch(0.7 0.12 170);
+  --primary-foreground: oklch(0.17 0.015 250);
+  --accent: oklch(0.3 0.05 170);
+  --accent-foreground: oklch(0.9 0.05 170);
+  --korean-foreground: oklch(0.7 0.02 250);
+}
+
+@theme inline {
+  --font-sans: var(--font-pretendard), ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-korean: var(--korean-foreground);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+}

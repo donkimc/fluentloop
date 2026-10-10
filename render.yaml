@@ -1,0 +1,30 @@
+# Render Blueprint (docs/PLAN.md §2). Secrets are set in the Render dashboard
+# (sync: false), never committed.
+services:
+  - type: web
+    name: fluentloop-web
+    runtime: docker
+    region: singapore
+    plan: starter
+    dockerfilePath: ./apps/web/Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+  - type: cron
+    name: fluentloop-nightly
+    runtime: docker
+    region: singapore
+    plan: starter
+    # 18:00 UTC = 03:00 KST: tomorrow's sets are ready before learners wake up.
+    schedule: "0 18 * * *"
+    dockerfilePath: ./apps/worker/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DRY_RUN
+        value: "true"

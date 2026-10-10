@@ -1,0 +1,16 @@
+{
+  "name": "@fluentloop/worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "nightly": "tsx src/nightly.ts",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@fluentloop/ai": "workspace:*",
+    "@fluentloop/core": "workspace:*",
+    "tsx": "^4.23.15",
+    "zod": "^4.3.6"
+  }
+}

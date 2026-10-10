@@ -1,0 +1,21 @@
+# Web app image. Build from the repo root:
+#   docker build -f apps/web/Dockerfile -t fluentloop-web .
+FROM node:22-slim AS base
+RUN corepack enable
+
+FROM base AS build
+WORKDIR /repo
+COPY . .
+RUN pnpm install --frozen-lockfile --filter "@fluentloop/web..."
+RUN pnpm --filter @fluentloop/web build
+
+FROM node:22-slim AS run
+WORKDIR /app
+ENV NODE_ENV=production \
+    HOSTNAME=0.0.0.0 \
+    PORT=10000
+COPY --from=build --chown=node:node /repo/apps/web/.next/standalone ./
+COPY --from=build --chown=node:node /repo/apps/web/.next/static ./apps/web/.next/static
+USER node
+EXPOSE 10000
+CMD ["node", "apps/web/server.js"]

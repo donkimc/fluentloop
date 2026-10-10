@@ -9,7 +9,7 @@
 
 FluentLoop gives each learner a daily English set built for their current level. It starts from a short placement test and adapts every day from their results. All material is AI-generated, copyright-free and tracked over time.
 
-**Test group:** adult members of the founder's Karrot meetup group.
+**Test group:** the founder's Karrot meetup group: **~50 adults, mostly intermediate (≈ CEFR B1–B2), meeting once a week.**
 - Real users from day one, reachable through the group chat.
 - Feedback comes in person at meetups.
 
@@ -36,7 +36,9 @@ Progress page + group streak       →  in-person meetup  →  (loop repeats)
 
 | Area | Decision | Reason |
 |---|---|---|
-| Users | Adults in one Karrot meetup group, invite-only | Real testers, fast feedback, no minors |
+| Users | ~50 adults in one Karrot meetup group, invite-only | Real testers, fast feedback, no minors |
+| Level range | Focus on **B1–B2** (3 level bands: B1, B1+, B2), with A2 and C1 as edge bands | Group is mid-level; fewer bands = cheaper generation and easier QA |
+| Cadence | Weekly cycle anchored on the meetup day | Group meets once a week |
 | Roles | **None.** Every user is a learner | Simplest possible app; owner tasks done via scripts or config |
 | UI language | English | Immersion |
 | Korean support | Korean meaning/explanation for phrases, vocabulary and grammar notes, behind a "show Korean" toggle | Helps lower levels without breaking immersion |
@@ -59,15 +61,15 @@ Progress page + group streak       →  in-person meetup  →  (loop repeats)
    - Signs in with Kakao, or with an email magic link.
    - Picks a display name.
 2. **Placement test**
-   - About 15–20 minutes; adults won't sit through longer.
+   - About 15 minutes; adults won't sit through longer. Starts at B1 and adapts up or down, since the group is mid-level.
    - Adaptive MCQ for grammar and vocabulary, plus a short reading, a short listening and one writing prompt.
    - Output: an estimated CEFR level per skill, shown in plain words ("You're around B1 in grammar").
    - The learner can retake it once a month.
 3. **Curriculum backbone**
-   - CEFR levels A1–C1, split into skills: grammar, vocabulary, reading, listening, writing.
+   - Content concentrated on B1–B2 (bands B1, B1+, B2), with A2 and C1 edge bands for outliers. Split into skills: grammar, vocabulary, reading, listening, writing.
    - Built from a grammar-point list and openly licensed vocabulary lists (e.g. NGSL; verify the license).
    - Topics for adults: daily life, work, travel, small talk, opinions.
-4. **Nightly generation** (Render cron). For each level, generate the next day's shared set:
+4. **Nightly generation** (Render cron). For each level band (about 3–5), generate the next day's shared set:
    - 8–10 MCQ (grammar/vocabulary)
    - 1 short reading with questions
    - 1 listening clip with questions
@@ -78,9 +80,11 @@ Progress page + group streak       →  in-person meetup  →  (loop repeats)
 
    Every item gets Korean explanations, audio is generated with TTS and uploaded to R2, and automatic QA (§5) runs before anything is published.
 5. **Meetup topic pack (the differentiator)**
-   - The owner sets this week's meetup topic in a config file or with a script; there is no in-app admin.
-   - Before the meetup: 10 key phrases and vocabulary for the topic, a sample dialogue with audio, and 3 conversation questions to prepare.
-   - After the meetup: a short review quiz on the pack.
+   - Weekly cycle anchored on the meetup day (set in config):
+     - **Meetup day + 1:** the founder sets next week's topic in `config/meetup-topics.yaml` (or picks from an app-suggested list). There is no in-app admin.
+     - **Days before the meetup:** the daily set includes the topic pack: 10 key phrases and vocabulary, a sample dialogue with audio, and 3 conversation questions to prepare.
+     - **After the meetup:** a short review quiz on the pack, plus "phrases I wanted to say": the learner types what they couldn't express, and gets natural English for it.
+   - **Founder review (~15 min/week):** spot-check the topic pack and a sample of Korean explanations before it goes live.
 6. **Daily set (student view)**
    - Mobile-first PWA, 5–10 minutes.
    - MCQ is scored instantly.
@@ -104,11 +108,12 @@ Pronunciation scoring, speech-to-text, live AI conversation, payments, native ap
 
 | Metric | Target |
 |---|---|
-| Invited members who sign up | ≥ 50% |
-| Week-4 retention (active ≥ 3 days in week 4) | ≥ 30% of sign-ups |
+| Members who sign up (of ~50) | ≥ 25 |
+| Week-4 retention (active ≥ 3 days in week 4) | ≥ 8 people (≈ 30% of sign-ups) |
+| Members who use the topic pack before a meetup | ≥ 50% of active users |
 | Daily set completion on active days | ≥ 70% |
 | Items flagged as wrong | < 2% |
-| Members who'd pay, and how much (survey + interviews) | ≥ 20% say yes, with a ₩ amount |
+| Members who'd pay, and how much (survey + interviews) | ≥ 5 say yes, with a ₩ amount |
 | AI + infra cost | ≤ ₩30,000 / month total |
 
 ## 4. Architecture
@@ -283,9 +288,10 @@ Adults only; no roles. That's simpler than v1, but the Korean privacy law (PIPA)
 - **Exit:** E1–E8 pass, and the founder uses it daily for 1 week without blockers.
 
 ### Phase 2 — Group test (≈ 6–8 weeks)
-- Invite the Karrot group in waves: 5 friendly testers first, then everyone.
+- Invite the group in waves: 5 friendly testers first (week 1), then all ~50 members (week 2).
 - Add meetup topic packs, shadowing, and the group streak / leaderboard.
-- Weekly check-in at the meetup, plus a short survey every 2 weeks.
+- Weekly check-in at the meetup (5 minutes of feedback), plus a short survey every 2 weeks.
+- Founder spends ~15 min/week checking the topic pack and Korean explanations.
 - Grow the gold sets from flags; fix the top complaints weekly.
 - **Exit:** measure §3.3 and decide go / adjust / stop. Run pricing interviews.
 
@@ -318,7 +324,7 @@ Adults only; no roles. That's simpler than v1, but the Korean privacy law (PIPA)
 | Stage | Users | Infra | AI (LLM) | Total |
 |---|---|---|---|---|
 | Dev | 1–5 | ~$0 (free tiers) | < $1 | **~$0–1** |
-| Group test | 20–100 | ~$8–15 (Render Starter, Neon/R2 free, domain amortized) | ~$1–5 | **~$10–20 (≈ ₩14K–28K)** |
+| Group test | ~50 | ~$8–15 (Render Starter, Neon/R2 free, domain amortized) | ~$1–3 | **~$10–18 (≈ ₩14K–25K)** |
 | Open to more groups | ~1,000 | ~$40–80 | ~$30–100 | **~$70–180** |
 | + Speaking v1 (in-browser) | any | +$0 | – | unchanged |
 
@@ -335,10 +341,11 @@ Not included: domain (~$10–15/year), legal review before charging, the founder
 | Using Karrot name/brand | Don't use "Karrot/당근" in the product name or marketing; it's just where the group lives |
 | Vendor price changes | Provider interfaces, Docker portability, monthly cost review |
 
-**Open questions:**
-1. How many members are in the group, and roughly what English levels?
-2. How often does the group meet, and do meetups already have themes?
-3. Is the founder OK being the human checker for Korean explanations during the test (~15 min/week)?
+**Answered:** ~50 members, mostly intermediate; weekly meetups; the founder will spend ~15 min/week checking content.
+
+**Still open:**
+1. Meetup weekday (sets the weekly cycle in config).
+2. Name and domain (§11).
 
 ## 11. Name
 

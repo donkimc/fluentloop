@@ -4,7 +4,9 @@
 
 ## About
 
-FluentLoop is a project in early development. More details coming soon.
+FluentLoop builds a personalized, AI-generated English curriculum that adapts to each learner's level, starting with Korean hagwons.
+
+See [docs/PLAN.md](docs/PLAN.md) for the MVP and expansion plan.
 
 ## Getting Started
 

@@ -1,6 +1,6 @@
 # ADR 001 — Initial stack
 
-- Status: accepted
+- Status: accepted; hosting, database and storage superseded by ADR 002
 - Date: 2026-10-10
 
 ## Context

@@ -64,6 +64,6 @@ packages/ui     design tokens (styles.css) and shared components
 
 ## Security & privacy (summary of PLAN.md §7)
 
-- Secrets only in Render environment variables.
+- Secrets only in Railway environment variables.
 - Every database query is scoped to the signed-in user.
 - Collect the minimum personal data; no voice recordings leave the device.

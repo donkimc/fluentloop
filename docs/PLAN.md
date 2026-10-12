@@ -3,6 +3,8 @@
 > Status: draft for review · No code written yet · "FluentLoop" is a working name (see §11).
 > Every price in this document is an estimate from late-2026 research. Re-check vendor pricing pages before committing.
 >
+> **Hosting update (2026-10-12):** Render, Neon and Cloudflare R2 replaced by Railway for hosting, Postgres and file storage. See `docs/adr/002-railway.md`.
+>
 > **v2 changes:** the target moved from hagwons (B2B, minors, roles) to adult members of the founder's Karrot (당근) meetup group. That removes teacher/admin roles and parental consent. The UI is English, with Korean explanations for phrases and vocabulary.
 
 ## 1. Product summary
@@ -50,9 +52,9 @@ Progress page + group streak       →  in-person meetup  →  (loop repeats)
 | Speaking in MVP       | Shadowing (listen → record → compare, on-device only)                                                                                            | Zero cost, no voice data stored                                    |
 | Text-to-speech        | Kokoro (Apache-2.0) or Piper (MIT code; check each voice's license)                                                                              | ~$0, generated nightly, cached                                     |
 | LLM                   | Budget model for daily volume (e.g. Claude Haiku 5.5); stronger model (e.g. Claude Sonnet 5.5) for placement and QA, behind a provider interface | A few dollars a month at group size                                |
-| Hosting               | Render web service + Render cron (Singapore)                                                                                                     | Cheap, Docker-portable                                             |
-| Database              | Neon Postgres (free tier → paid when needed)                                                                                                     | Scales to zero                                                     |
-| File storage          | Cloudflare R2                                                                                                                                    | Free egress for audio                                              |
+| Hosting               | Railway web service + Railway cron service (Singapore)                                                                                           | One provider, usage-billed, Docker-portable                        |
+| Database              | Railway Postgres, same project and region as the app                                                                                             | Private network to the app; backups + PITR built in                |
+| File storage          | Railway Bucket (S3-compatible, Singapore)                                                                                                        | Free egress for audio                                              |
 
 ## 3. MVP scope
 
@@ -71,7 +73,7 @@ Progress page + group streak       →  in-person meetup  →  (loop repeats)
    - Content concentrated on B1–B2 (bands B1, B1+, B2), with A2 and C1 edge bands for outliers. Split into skills: grammar, vocabulary, reading, listening, writing.
    - Built from a grammar-point list and openly licensed vocabulary lists (e.g. NGSL; verify the license).
    - Topics for adults: daily life, work, travel, small talk, opinions.
-4. **Nightly generation** (Render cron). For each level band (about 3–5), generate the next day's shared set:
+4. **Nightly generation** (Railway cron). For each level band (about 3–5), generate the next day's shared set:
    - 8–10 MCQ (grammar/vocabulary)
    - 1 short reading with questions
    - 1 listening clip with questions
@@ -80,7 +82,7 @@ Progress page + group streak       →  in-person meetup  →  (loop repeats)
 
    Then for each learner, add 3–5 review items from their mistake log.
 
-   Every item gets Korean explanations, audio is generated with TTS and uploaded to R2, and automatic QA (§5) runs before anything is published.
+   Every item gets Korean explanations, audio is generated with TTS and uploaded to the Railway bucket, and automatic QA (§5) runs before anything is published.
 
 5. **Meetup topic pack (the differentiator)**
    - Weekly cycle anchored on the meetup day (set in config):
@@ -132,9 +134,9 @@ Pronunciation scoring, speech-to-text, live AI conversation, payments, native ap
 | Auth       | Better Auth (Kakao social login + email magic link); invite-code gate   |
 | Email      | Resend free tier (magic links)                                          |
 | Validation | Zod: API, LLM structured outputs, forms, env vars                       |
-| Jobs       | Render cron → `worker` app (same repo and Docker image)                 |
+| Jobs       | Railway cron service → `worker` app (same repo, own Docker image)       |
 | TTS        | Kokoro (kokoro-js) or Piper CLI in the worker image (decide in a spike) |
-| Storage    | Cloudflare R2                                                           |
+| Storage    | Railway Bucket (S3-compatible)                                          |
 | LLM        | Provider interface in `packages/ai`; Anthropic SDK first                |
 | Monitoring | Sentry free tier, uptime pinger, structured logs                        |
 
@@ -175,7 +177,7 @@ docs/         plan, ADRs, conventions
 - `notebook_entries` (user, phrase/word, Korean meaning, example, review schedule)
 - `skill_estimates` (user × skill → rating, confidence, history)
 - `feedback` (user, item, kind, comment)
-- `assets` (R2 key, type, item)
+- `assets` (bucket key, type, item)
 
 ### 4.4 Batch vs. live
 
@@ -255,7 +257,7 @@ Adults only; no roles. That's simpler than v1, but the Korean privacy law (PIPA)
 
 **Secrets and inputs**
 
-- API keys live only in Render environment variables. gitleaks runs in CI.
+- API keys live only in Railway environment variables. gitleaks runs in CI.
 - **LLM safety:**
   - Learner writing is treated as untrusted input: delimited in the prompt, no tools, structured output only.
   - Per-user rate limits and daily cost caps on LLM calls.
@@ -263,7 +265,8 @@ Adults only; no roles. That's simpler than v1, but the Korean privacy law (PIPA)
 
 **Data**
 
-- Neon point-in-time recovery.
+- Railway Postgres point-in-time recovery (about 4 weeks of history) plus daily volume backups. Enable both before the first learner signs up, and do one restore drill.
+- Set a Railway usage limit so a runaway job can't run up the bill.
 
 **Privacy (PIPA)**
 
@@ -282,9 +285,9 @@ Adults only; no roles. That's simpler than v1, but the Korean privacy law (PIPA)
 - [x] Monorepo scaffold, lint/format/typecheck, CI, PR template, `CLAUDE.md` with conventions.
 - [x] Design tokens + shadcn-style base components.
 - [x] Eval harness with first gold items (deterministic checks; LLM-judged evals in Phase 1).
-- [x] Dockerfiles for web and worker + `render.yaml` blueprint (both images build and run).
-- [ ] Render staging from `render.yaml` (needs the founder's Render account).
-- [ ] Neon, R2, Sentry accounts; Kakao developer app registration (moved to Phase 1 with login and DB).
+- [x] Dockerfiles for web and worker (both images build and run).
+- [ ] Railway project from `.railway/railway.ts` (needs the founder's Railway account, Hobby plan). Replaces the earlier Render blueprint; see ADR 002.
+- [ ] Sentry account; Kakao developer app registration (moved to Phase 1 with login and DB).
 - [ ] Spike: Kokoro vs Piper voice quality and license check.
 - [ ] Pick a name and register the domain.
 - **Exit:** an empty app deploys to staging through green CI. (Kakao login moves to Phase 1.)
@@ -326,22 +329,22 @@ Adults only; no roles. That's simpler than v1, but the Korean privacy law (PIPA)
 
 ### Scale triggers
 
-| Signal                             | Action                                                           |
-| ---------------------------------- | ---------------------------------------------------------------- |
-| Free web service sleeping hurts UX | Render Starter ($7) from day one of the group test               |
-| Neon free limits reached           | Neon paid plan                                                   |
-| > ~1,000 users                     | Render Standard / 2 instances; Render Pro workspace; Sentry Team |
-| ≥ 2–3K users on speaking features  | Self-host speech-to-text and scoring on GPU                      |
-| Render no longer fits              | Same Docker image → Fly.io / AWS / GCP                           |
+| Signal                                 | Action                                                            |
+| -------------------------------------- | ----------------------------------------------------------------- |
+| Hobby plan's $5 included usage used up | Pay the usage delta; review the biggest service in the usage view |
+| A second person needs project access   | Railway Pro ($20/month, includes $20 usage)                       |
+| > ~1,000 users                         | Railway Pro; 2 web replicas; Sentry Team                          |
+| ≥ 2–3K users on speaking features      | Self-host speech-to-text and scoring on GPU                       |
+| Railway no longer fits                 | Same Docker images → Fly.io / AWS / GCP; `pg_dump` the database   |
 
 ## 9. Cost plan (monthly estimates)
 
-| Stage                      | Users  | Infra                                                   | AI (LLM) | Total                    |
-| -------------------------- | ------ | ------------------------------------------------------- | -------- | ------------------------ |
-| Dev                        | 1–5    | ~$0 (free tiers)                                        | < $1     | **~$0–1**                |
-| Group test                 | ~50    | ~$8–15 (Render Starter, Neon/R2 free, domain amortized) | ~$1–3    | **~$10–18 (≈ ₩14K–25K)** |
-| Open to more groups        | ~1,000 | ~$40–80                                                 | ~$30–100 | **~$70–180**             |
-| + Speaking v1 (in-browser) | any    | +$0                                                     | –        | unchanged                |
+| Stage                      | Users  | Infra                                                  | AI (LLM) | Total                   |
+| -------------------------- | ------ | ------------------------------------------------------ | -------- | ----------------------- |
+| Dev                        | 1–5    | ~$0–5 (Railway Free plan, or Hobby once staging is up) | < $1     | **~$0–6**               |
+| Group test                 | ~50    | ~$6–12 (Railway Hobby $5 incl. $5 usage, plus overage) | ~$1–3    | **~$7–15 (≈ ₩10K–21K)** |
+| Open to more groups        | ~1,000 | ~$40–80 (Railway Pro + usage)                          | ~$30–100 | **~$70–180**            |
+| + Speaking v1 (in-browser) | any    | +$0                                                    | –        | unchanged               |
 
 Not included: domain (~$10–15/year), legal review before charging, the founder's time.
 

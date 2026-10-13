@@ -6,6 +6,10 @@ RUN corepack enable
 FROM base AS build
 WORKDIR /repo
 COPY . .
+# Placeholders only for Next's build-time analysis. Runtime uses Railway env.
+ENV DATABASE_URL="postgresql://postgres:postgres@127.0.0.1:5432/fluentloop" \
+    BETTER_AUTH_SECRET="build-time-placeholder-secret-32chars" \
+    BETTER_AUTH_URL="http://localhost:3000"
 RUN pnpm install --frozen-lockfile --filter "@fluentloop/web..."
 RUN pnpm --filter @fluentloop/web build
 

@@ -1,6 +1,6 @@
 # FluentLoop — MVP & Expansion Plan (v2)
 
-> Status: draft for review · No code written yet · "FluentLoop" is a working name (see §11).
+> Status: Phase 0 engineering is deployed · "FluentLoop" is still a working name (see §11).
 > Every price in this document is an estimate from late-2026 research. Re-check vendor pricing pages before committing.
 >
 > **Hosting update (2026-10-12):** Render, Neon and Cloudflare R2 replaced by Railway for hosting, Postgres and file storage. See `docs/adr/002-railway.md`.
@@ -125,20 +125,20 @@ Pronunciation scoring, speech-to-text, live AI conversation, payments, native ap
 
 ### 4.1 Stack
 
-| Layer      | Choice                                                                  |
-| ---------- | ----------------------------------------------------------------------- |
-| Language   | TypeScript (strict)                                                     |
-| Web app    | Next.js (App Router), installable PWA                                   |
-| UI         | Tailwind CSS + shadcn/ui                                                |
-| DB access  | Drizzle ORM + SQL migrations                                            |
-| Auth       | Better Auth (Kakao social login + email magic link); invite-code gate   |
-| Email      | Resend free tier (magic links)                                          |
-| Validation | Zod: API, LLM structured outputs, forms, env vars                       |
-| Jobs       | Railway cron service → `worker` app (same repo, own Docker image)       |
-| TTS        | Kokoro (kokoro-js) or Piper CLI in the worker image (decide in a spike) |
-| Storage    | Railway Bucket (S3-compatible)                                          |
-| LLM        | Provider interface in `packages/ai`; Anthropic SDK first                |
-| Monitoring | Sentry free tier, uptime pinger, structured logs                        |
+| Layer      | Choice                                                                |
+| ---------- | --------------------------------------------------------------------- |
+| Language   | TypeScript (strict)                                                   |
+| Web app    | Next.js (App Router), installable PWA                                 |
+| UI         | Tailwind CSS + shadcn/ui                                              |
+| DB access  | Drizzle ORM + SQL migrations                                          |
+| Auth       | Better Auth (Kakao social login + email magic link); invite-code gate |
+| Email      | Resend free tier (magic links)                                        |
+| Validation | Zod: API, LLM structured outputs, forms, env vars                     |
+| Jobs       | Railway cron service → `worker` app (same repo, own Docker image)     |
+| TTS        | Kokoro via `kokoro-js` (Apache-2.0). See `docs/adr/003-tts.md`        |
+| Storage    | Railway Bucket (S3-compatible)                                        |
+| LLM        | Provider interface in `packages/ai`; Anthropic SDK first              |
+| Monitoring | Sentry free tier, uptime pinger, structured logs                      |
 
 There is no separate i18n framework for the MVP. UI strings are English. Korean appears only in generated learning content, as a field on each item.
 
@@ -286,15 +286,15 @@ Adults only; no roles. That's simpler than v1, but the Korean privacy law (PIPA)
 - [x] Design tokens + shadcn-style base components.
 - [x] Eval harness with first gold items (deterministic checks; LLM-judged evals in Phase 1).
 - [x] Dockerfiles for web and worker (both images build and run).
-- [ ] Railway project from `.railway/railway.ts` (needs the founder's Railway account, Hobby plan). Replaces the earlier Render blueprint; see ADR 002.
+- [x] Railway project from `.railway/railway.ts` (Hobby plan, Singapore). Web, nightly cron, Postgres, and the audio bucket are up. The empty app is at https://web-production-8f7ab.up.railway.app — Railway's only environment is named `production`; there is no separate staging environment yet.
 - [ ] Sentry account; Kakao developer app registration (moved to Phase 1 with login and DB).
-- [ ] Spike: Kokoro vs Piper voice quality and license check.
+- [x] Spike: Kokoro vs Piper voice quality and license check. Decision: Kokoro. See ADR 003.
 - [ ] Pick a name and register the domain.
-- **Exit:** an empty app deploys to staging through green CI. (Kakao login moves to Phase 1.)
+- **Exit:** the empty app is deployed and `/api/health` returns ok. (Kakao login moves to Phase 1. Name and domain are still open.)
 
 ### Phase 1 — Core MVP (≈ 3–5 weeks)
 
-- Invite-code join, Kakao/email login, consent.
+- [x] Invite-code join, Kakao/email login, consent. (Kakao/Resend credentials still to register.)
 - Placement test.
 - Curriculum backbone.
 - Nightly generation + QA + TTS.

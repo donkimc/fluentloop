@@ -16,6 +16,10 @@ jobs:
   check:
     name: Lint, typecheck, test, evals, build
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/fluentloop
+      BETTER_AUTH_SECRET: ci-build-secret-at-least-32-characters-long
+      BETTER_AUTH_URL: http://localhost:3000
     steps:
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4

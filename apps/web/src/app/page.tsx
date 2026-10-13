@@ -1,6 +1,26 @@
 import { Button, KoreanHint } from "@fluentloop/ui";
+import Link from "next/link";
 
-export default function HomePage() {
+import { getSession } from "@/lib/session";
+
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  let session: Awaited<ReturnType<typeof getSession>> = null;
+  try {
+    session = await getSession();
+  } catch {
+    session = null;
+  }
+
+  const consentedAt = session
+    ? (session.user as { consentedAt?: Date | string | null }).consentedAt
+    : null;
+  const displayName =
+    session &&
+    ((session.user as { displayName?: string | null }).displayName?.trim() ||
+      session.user.name?.trim());
+
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col justify-center gap-6 px-4 py-12">
       <div className="space-y-2">
@@ -11,7 +31,21 @@ export default function HomePage() {
         </p>
         <KoreanHint>매일 5~10분, 내 수준에 맞춘 영어 학습.</KoreanHint>
       </div>
-      <Button disabled>Coming soon</Button>
+
+      {session && consentedAt ? (
+        <p className="text-sm text-muted-foreground">
+          Signed in as <span className="font-medium text-foreground">{displayName}</span>. Placement
+          and daily sets come next.
+        </p>
+      ) : session ? (
+        <Button asChild>
+          <Link href="/onboarding">Finish setup</Link>
+        </Button>
+      ) : (
+        <Button asChild>
+          <Link href="/join">Join with invite</Link>
+        </Button>
+      )}
     </main>
   );
 }

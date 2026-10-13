@@ -19,6 +19,8 @@ export default defineRailway(() => {
     env: {
       NODE_ENV: "production",
       DATABASE_URL: db.env.DATABASE_URL,
+      // Secrets are set in the Railway dashboard (BETTER_AUTH_SECRET, BETTER_AUTH_URL,
+      // KAKAO_*, RESEND_API_KEY). Wire them with preserve() once they exist.
     },
   });
 

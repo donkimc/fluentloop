@@ -34,7 +34,7 @@ const nextConfig: NextConfig = {
   output: "standalone",
   outputFileTracingRoot: monorepoRoot,
   turbopack: { root: monorepoRoot },
-  transpilePackages: ["@fluentloop/core", "@fluentloop/ui"],
+  transpilePackages: ["@fluentloop/core", "@fluentloop/db", "@fluentloop/ui"],
   poweredByHeader: false,
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

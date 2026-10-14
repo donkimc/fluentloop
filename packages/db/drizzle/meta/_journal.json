@@ -8,6 +8,20 @@
       "when": 1760270000000,
       "tag": "0000_auth_and_invites",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1760460000000,
+      "tag": "0001_placement",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1760470000000,
+      "tag": "0002_curriculum",
+      "breakpoints": true
     }
   ]
 }

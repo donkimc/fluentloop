@@ -33,10 +33,14 @@ export default async function HomePage() {
       </div>
 
       {session && consentedAt ? (
-        <p className="text-sm text-muted-foreground">
-          Signed in as <span className="font-medium text-foreground">{displayName}</span>. Placement
-          and daily sets come next.
-        </p>
+        <div className="space-y-3">
+          <p className="text-sm text-muted-foreground">
+            Signed in as <span className="font-medium text-foreground">{displayName}</span>.
+          </p>
+          <Button asChild>
+            <Link href="/placement">Placement test</Link>
+          </Button>
+        </div>
       ) : session ? (
         <Button asChild>
           <Link href="/onboarding">Finish setup</Link>

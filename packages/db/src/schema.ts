@@ -1,5 +1,15 @@
 import { relations } from "drizzle-orm";
-import { boolean, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  doublePrecision,
+  index,
+  integer,
+  jsonb,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
 
 /**
  * Better Auth core tables plus SpeakGround learner fields.
@@ -74,6 +84,49 @@ export const invites = pgTable("invites", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+/** One placement attempt. `state` is the core placement document. */
+export const placementSessions = pgTable(
+  "placement_sessions",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    status: text("status").notNull(),
+    state: jsonb("state").notNull(),
+    startedAt: timestamp("started_at", { withTimezone: true }).notNull().defaultNow(),
+    completedAt: timestamp("completed_at", { withTimezone: true }),
+  },
+  (table) => [index("placement_sessions_user_id_idx").on(table.userId)],
+);
+
+/** Latest rating per skill. Written when a placement test is finished. */
+export const skillEstimates = pgTable(
+  "skill_estimates",
+  {
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    skill: text("skill").notNull(),
+    rating: doublePrecision("rating").notNull(),
+    attempts: integer("attempts").notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [primaryKey({ columns: [table.userId, table.skill] })],
+);
+
+/** Shared syllabus. Not learner data. Seeded from the core curriculum catalog. */
+export const curriculumNodes = pgTable("curriculum_nodes", {
+  id: text("id").primaryKey(),
+  level: text("level").notNull(),
+  skill: text("skill").notNull(),
+  topic: text("topic").notNull(),
+  title: text("title").notNull(),
+  korean: text("korean").notNull(),
+  summary: text("summary").notNull(),
+  headwords: jsonb("headwords").notNull(),
+});
+
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
@@ -99,6 +152,9 @@ export const schema = {
   account,
   verification,
   invites,
+  placementSessions,
+  skillEstimates,
+  curriculumNodes,
   userRelations,
   sessionRelations,
   accountRelations,

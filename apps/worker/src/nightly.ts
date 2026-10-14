@@ -1,4 +1,4 @@
-import { LEVEL_BANDS } from "@fluentloop/core";
+import { CURRICULUM, LEVEL_BANDS } from "@fluentloop/core";
 
 import { loadEnv } from "./env";
 
@@ -14,6 +14,7 @@ console.info(
     env: env.NODE_ENV,
     dryRun: env.DRY_RUN,
     levelBands: LEVEL_BANDS,
+    curriculumNodes: CURRICULUM.length,
     status: "noop",
   }),
 );

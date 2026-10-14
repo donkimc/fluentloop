@@ -295,8 +295,8 @@ Adults only; no roles. That's simpler than v1, but the Korean privacy law (PIPA)
 ### Phase 1 — Core MVP (≈ 3–5 weeks)
 
 - [x] Invite-code join, Kakao/email login, consent. (Kakao/Resend credentials still to register.)
-- Placement test.
-- Curriculum backbone.
+- [x] Placement test. Listening uses the device voice. The writing level is a first estimate until the LLM grader.
+- [x] Curriculum backbone. Grammar points and topic vocabulary are original. NGSL 1.2 is CC BY-SA 4.0, so that list is not copied into the repo.
 - Nightly generation + QA + TTS.
 - Daily set with writing feedback and Korean toggle.
 - Notebook with spaced review.

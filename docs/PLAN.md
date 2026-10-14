@@ -1,6 +1,6 @@
-# FluentLoop — MVP & Expansion Plan (v2)
+# SpeakGround — MVP & Expansion Plan (v2)
 
-> Status: Phase 0 engineering is deployed · "FluentLoop" is still a working name (see §11).
+> Status: Phase 0 engineering is deployed · the product name is SpeakGround, at https://speakground.club (see §11).
 > Every price in this document is an estimate from late-2026 research. Re-check vendor pricing pages before committing.
 >
 > **Hosting update (2026-10-12):** Render, Neon and Cloudflare R2 replaced by Railway for hosting, Postgres and file storage. See `docs/adr/002-railway.md`.
@@ -9,7 +9,7 @@
 
 ## 1. Product summary
 
-FluentLoop gives each learner a daily English set built for their current level. It starts from a short placement test and adapts every day from their results. All material is AI-generated, copyright-free and tracked over time.
+SpeakGround gives each learner a daily English set built for their current level. It starts from a short placement test and adapts every day from their results. All material is AI-generated, copyright-free and tracked over time.
 
 **Test group:** the founder's Karrot meetup group: **~50 adults, mostly intermediate (≈ CEFR B1–B2), meeting once a week.**
 
@@ -289,8 +289,8 @@ Adults only; no roles. That's simpler than v1, but the Korean privacy law (PIPA)
 - [x] Railway project from `.railway/railway.ts` (Hobby plan, Singapore). Web, nightly cron, Postgres, and the audio bucket are up. The empty app is at https://web-production-8f7ab.up.railway.app — Railway's only environment is named `production`; there is no separate staging environment yet.
 - [ ] Sentry account; Kakao developer app registration (moved to Phase 1 with login and DB).
 - [x] Spike: Kokoro vs Piper voice quality and license check. Decision: Kokoro. See ADR 003.
-- [ ] Pick a name and register the domain.
-- **Exit:** the empty app is deployed and `/api/health` returns ok. (Kakao login moves to Phase 1. Name and domain are still open.)
+- [x] Name and domain: SpeakGround, https://speakground.club.
+- **Exit:** the empty app is deployed and `/api/health` returns ok. (Kakao login moves to Phase 1.)
 
 ### Phase 1 — Core MVP (≈ 3–5 weeks)
 
@@ -364,18 +364,9 @@ Not included: domain (~$10–15/year), legal review before charging, the founder
 **Still open:**
 
 1. Meetup weekday (sets the weekly cycle in config).
-2. Name and domain (§11).
 
 ## 11. Name
 
-Shortlist (all `.com` availability **unverified**, see below):
+**SpeakGround**, domain **speakground.club** (registered 2026-10-14).
 
-| Name               | Idea                                                            |
-| ------------------ | --------------------------------------------------------------- |
-| **FluentLoop**     | The daily adapt-and-repeat loop; already the repo name          |
-| **Phrasebite**     | Bite-sized daily phrases; short, memorable                      |
-| **Dongne English** | "Neighborhood English": local, community-first, fits the meetup |
-| **MeetPrep**       | Prepare for this week's meetup; very literal                    |
-| **Levelloop**      | Learning at your level, every day                               |
-
-Check availability with a registrar search (Cloudflare Registrar, Namecheap, Porkbun) before deciding. The automated lookup from the build environment was blocked by network policy.
+The GitHub repository is `donkimc/speakground`. Internal packages stay `@fluentloop/*`.

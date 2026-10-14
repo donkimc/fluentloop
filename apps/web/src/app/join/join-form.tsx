@@ -153,7 +153,7 @@ export function JoinForm({
       <div className="space-y-2">
         <h1 className="text-2xl font-bold tracking-tight">Join with an invite</h1>
         <p className="text-muted-foreground">
-          FluentLoop is invite-only for the meetup group. Paste the code from the group chat.
+          SpeakGround is invite-only for the meetup group. Paste the code from the group chat.
         </p>
         <KoreanHint>모임 단톡방에 공유된 초대 코드를 입력하세요.</KoreanHint>
       </div>

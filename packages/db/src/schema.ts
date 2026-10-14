@@ -2,7 +2,7 @@ import { relations } from "drizzle-orm";
 import { boolean, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 /**
- * Better Auth core tables plus FluentLoop learner fields.
+ * Better Auth core tables plus SpeakGround learner fields.
  * JS properties are camelCase; Postgres columns are snake_case (CLAUDE.md).
  */
 

@@ -34,8 +34,8 @@ async function sendMagicLinkEmail(email: string, url: string, env: WebEnv): Prom
   const result = await resend.emails.send({
     from: env.EMAIL_FROM,
     to: email,
-    subject: "Your FluentLoop sign-in link",
-    text: `Sign in to FluentLoop:\n\n${url}\n\nThis link expires in a few minutes.`,
+    subject: "Your SpeakGround sign-in link",
+    text: `Sign in to SpeakGround:\n\n${url}\n\nThis link expires in a few minutes.`,
   });
   if (result.error) {
     throw new Error(result.error.message);
@@ -99,7 +99,7 @@ function createAuth() {
               }) => {
                 const id = String(profile.id);
                 const email =
-                  profile.kakao_account?.email ?? `kakao_${id}@users.fluentloop.invalid`;
+                  profile.kakao_account?.email ?? `kakao_${id}@users.speakground.invalid`;
                 return {
                   name: profile.properties?.nickname ?? "Learner",
                   email,

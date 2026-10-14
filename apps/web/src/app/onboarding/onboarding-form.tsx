@@ -104,7 +104,7 @@ export function OnboardingForm({ suggestedName }: { suggestedName: string }) {
           required
         />
         <span>
-          I am an adult and agree that FluentLoop may store my learning data to improve the beta.
+          I am an adult and agree that SpeakGround may store my learning data to improve the beta.
           Hosting and AI processing may happen outside Korea (Singapore / LLM vendors). Voice
           recordings stay on my device.
           <KoreanHint>

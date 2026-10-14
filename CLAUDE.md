@@ -1,4 +1,4 @@
-# FluentLoop — working conventions
+# SpeakGround — working conventions
 
 Daily English sets at each learner's level, tested first with an adult Karrot
 meetup group (~50 people, mostly B1–B2). Product plan: `docs/PLAN.md`.

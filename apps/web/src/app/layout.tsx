@@ -12,7 +12,7 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "FluentLoop",
+  title: "SpeakGround",
   description: "A daily English set built for your level.",
 };
 

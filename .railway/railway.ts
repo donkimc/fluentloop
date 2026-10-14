@@ -12,7 +12,7 @@ export default defineRailway(() => {
   const audio = bucket("audio", { region: "sin" });
 
   const web = service("web", {
-    source: github("donkimc/fluentloop", { branch: "main" }),
+    source: github("donkimc/speakground", { branch: "main" }),
     build: { builder: "DOCKERFILE", dockerfilePath: "apps/web/Dockerfile" },
     healthcheck: "/api/health",
     deploy: { region: REGION },
@@ -25,7 +25,7 @@ export default defineRailway(() => {
   });
 
   const nightly = service("nightly", {
-    source: github("donkimc/fluentloop", { branch: "main" }),
+    source: github("donkimc/speakground", { branch: "main" }),
     build: { builder: "DOCKERFILE", dockerfilePath: "apps/worker/Dockerfile" },
     deploy: {
       region: REGION,
@@ -40,5 +40,5 @@ export default defineRailway(() => {
     },
   });
 
-  return project("fluentloop", { resources: [web, nightly, db, audio] });
+  return project("speakground", { resources: [web, nightly, db, audio] });
 });

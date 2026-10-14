@@ -12,7 +12,7 @@ const envSchema = z.object({
   KAKAO_CLIENT_ID: z.string().min(1).optional(),
   KAKAO_CLIENT_SECRET: z.string().min(1).optional(),
   RESEND_API_KEY: z.string().min(1).optional(),
-  EMAIL_FROM: z.string().email().default("FluentLoop <onboarding@resend.dev>"),
+  EMAIL_FROM: z.string().email().default("SpeakGround <onboarding@resend.dev>"),
 });
 
 export type WebEnv = z.infer<typeof envSchema>;

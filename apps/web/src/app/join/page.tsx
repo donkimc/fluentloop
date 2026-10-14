@@ -33,7 +33,7 @@ export default async function JoinPage({
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col justify-center px-4 py-12">
-      <p className="mb-6 text-sm font-semibold tracking-wide text-primary uppercase">FluentLoop</p>
+      <p className="mb-6 text-sm font-semibold tracking-wide text-primary uppercase">SpeakGround</p>
       <JoinForm initialCode={params.code?.trim() ?? ""} kakaoEnabled={kakaoEnabled} />
     </main>
   );

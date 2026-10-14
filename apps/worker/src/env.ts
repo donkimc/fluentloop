@@ -3,7 +3,7 @@ import { z } from "zod";
 /**
  * Worker configuration, validated at startup so a misconfigured cron run
  * fails immediately instead of halfway through generation.
- * Phase 1 adds the LLM, database and R2 variables.
+ * Phase 1 adds the LLM, database and bucket variables.
  */
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),

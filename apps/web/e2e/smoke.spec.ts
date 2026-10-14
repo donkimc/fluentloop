@@ -4,6 +4,18 @@ test("home page renders with Korean helper text", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Your daily English");
   await expect(page.locator('[lang="ko"]')).toBeVisible();
+  await expect(page.getByRole("link", { name: /join with invite/i })).toBeVisible();
+});
+
+test("join page accepts an invite code field", async ({ page }) => {
+  await page.goto("/join");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Join with an invite");
+  await expect(page.getByLabel("Invite code")).toBeVisible();
+});
+
+test("placement requires sign-in", async ({ page }) => {
+  await page.goto("/placement");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Join with an invite");
 });
 
 test("health endpoint responds", async ({ request }) => {

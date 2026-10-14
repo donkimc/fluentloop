@@ -1,4 +1,4 @@
-# FluentLoop — working conventions
+# SpeakGround — working conventions
 
 Daily English sets at each learner's level, tested first with an adult Karrot
 meetup group (~50 people, mostly B1–B2). Product plan: `docs/PLAN.md`.
@@ -64,6 +64,6 @@ packages/ui     design tokens (styles.css) and shared components
 
 ## Security & privacy (summary of PLAN.md §7)
 
-- Secrets only in Render environment variables.
+- Secrets only in Railway environment variables.
 - Every database query is scoped to the signed-in user.
 - Collect the minimum personal data; no voice recordings leave the device.

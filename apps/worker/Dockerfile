@@ -1,4 +1,4 @@
-# Nightly worker image (Render cron). Build from the repo root:
+# Nightly worker image (Railway cron). Build from the repo root:
 #   docker build -f apps/worker/Dockerfile -t fluentloop-worker .
 FROM node:22-slim
 RUN corepack enable

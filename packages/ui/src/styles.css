@@ -1,5 +1,5 @@
 /*
- * FluentLoop design tokens (docs/PLAN.md §6.3).
+ * SpeakGround design tokens (docs/PLAN.md §6.3).
  *
  * All colors, radii and fonts are defined once here as CSS variables and
  * exposed to Tailwind through @theme. Components use the semantic names
